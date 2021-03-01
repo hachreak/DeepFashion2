@@ -1,6 +1,8 @@
+import sys
 import os
 import json
 import numpy as np
+from pprint import pprint
 from pycocotools import mask as maskUtils
 
 
@@ -112,13 +114,18 @@ def load_gt_gallery(gallery_name):
     )
 
 
-def evaluate(results_image_id_all, results_query_score_all,
-             results_query_cls_all, results_query_box_all,
-             results_gallery_id_all, results_gallery_box_all,
-             query_image_id_all, query_box_all, query_cls_all, query_style_all,
-             query_pair_all, query_num, query_id_real,
-             gallery_image_id_all, gallery_box_all, gallery_style_all,
-             gallery_pair_all, thresh=0.5):
+def evaluate(results, gt_query, gt_gallery, thresh=0.5):
+
+    results_image_id_all, results_query_score_all, \
+         results_query_cls_all, results_query_box_all, \
+         results_gallery_id_all, results_gallery_box_all = results
+
+    query_image_id_all, query_box_all, query_cls_all, query_style_all, \
+         query_pair_all, query_num, query_id_real = gt_query
+
+    gallery_image_id_all, gallery_box_all, gallery_style_all, \
+         gallery_pair_all = gt_gallery
+
     correct_num_1 = 0
     correct_num_5 = 0
     correct_num_10 = 0
@@ -292,7 +299,15 @@ def evaluate(results_image_id_all, results_query_score_all,
         return top
 
 
-results_name = ' '
+#  results_name = ' '
+results_name = sys.argv[1]
 path = '/media/hachreak/Magrathea/datasets/deep-fashion-2/json_for_validation'
 query_name = os.path.join(path, 'val_query.json')
 gallery_name = os.path.join(path, 'val_gallery.json')
+
+results = load_results(results_name)
+gt_query = load_gt_query(query_name)
+gt_gallery = load_gt_gallery(gallery_name)
+top = evaluate(results, gt_query, gt_gallery)
+
+pprint(top)
