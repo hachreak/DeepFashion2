@@ -289,19 +289,21 @@ def evaluate(results, gt_query, gt_gallery, thresh=0.5):
                 else:
                     miss_num = miss_num + 1
 
-        top = dict()
-        top['top_1'] = float(correct_num_1) / query_num
-        top['top_10'] = float(correct_num_10) / query_num
-        top['top_5'] = float(correct_num_5) / query_num
-        top['top_15'] = float(correct_num_15) / query_num
-        top['top_20'] = float(correct_num_20) / query_num
+    top = dict()
+    top['top_1'] = float(correct_num_1) / query_num
+    top['top_10'] = float(correct_num_10) / query_num
+    top['top_5'] = float(correct_num_5) / query_num
+    top['top_15'] = float(correct_num_15) / query_num
+    top['top_20'] = float(correct_num_20) / query_num
 
-        return top
+    return top
 
 
 #  results_name = ' '
 results_name = sys.argv[1]
 path = '/media/hachreak/Magrathea/datasets/deep-fashion-2/json_for_validation'
+if len(sys.argv) > 2:
+    path = sys.argv[2]
 query_name = os.path.join(path, 'val_query.json')
 gallery_name = os.path.join(path, 'val_gallery.json')
 
